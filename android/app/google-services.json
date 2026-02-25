@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "245297413935",
+    "project_id": "social-coin-4f374",
+    "storage_bucket": "social-coin-4f374.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245297413935:android:cba67b4cad8d85385b6bda",
+        "android_client_info": {
+          "package_name": "com.j2yonghwa.socialcoin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBafnV4PyS9pfQsyKOfPQDB3SmUPIrb9DI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
