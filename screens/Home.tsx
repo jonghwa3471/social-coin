@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components/native";
 import { coins } from "../api";
-import { ActivityIndicator, FlatList } from "react-native";
+import { ActivityIndicator, FlatList, FlatListProps } from "react-native";
 import { BLACK_COLOR } from "../colors";
 import { useEffect, useState } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { InNavParamsList } from "../navigators/InNav";
+import Coin from "../components/Coin";
 
 const Container = styled.View`
   background-color: ${BLACK_COLOR};
@@ -17,19 +20,12 @@ const Loader = styled.View`
   align-items: center;
 `;
 
-const Coin = styled.View`
-  align-items: center;
+const List = styled(FlatList as React.ComponentType<FlatListProps<ICoin>>)`
+  padding: 20px 10px;
+  width: 100%;
 `;
 
-const CoinName = styled.Text`
-  color: white;
-`;
-
-const CoinSymbol = styled.Text`
-  color: white;
-`;
-
-interface coin {
+export interface ICoin {
   id: string;
   name: string;
   symbol: string;
@@ -39,12 +35,14 @@ interface coin {
   type: string;
 }
 
-export default function Home() {
-  const { isLoading, data } = useQuery<coin[]>({
+export default function Home({
+  navigation,
+}: NativeStackScreenProps<InNavParamsList>) {
+  const { isLoading, data } = useQuery<ICoin[]>({
     queryKey: ["coins"],
     queryFn: coins,
   });
-  const [cleanData, setCleanData] = useState<coin[]>();
+  const [cleanData, setCleanData] = useState<ICoin[]>();
   useEffect(() => {
     if (data) {
       setCleanData(
@@ -63,15 +61,16 @@ export default function Home() {
   }
   return (
     <Container>
-      <FlatList
-        numColumns={5}
+      <List
+        numColumns={3}
+        columnWrapperStyle={{
+          justifyContent: "space-between",
+        }}
+        contentContainerStyle={{ gap: 10 }}
         data={cleanData}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Coin>
-            <CoinName>{item.name}</CoinName>
-            <CoinSymbol>{item.symbol}</CoinSymbol>
-          </Coin>
+        renderItem={({ item, index }) => (
+          <Coin index={index} coinId={item.id} symbol={item.symbol} />
         )}
       />
     </Container>

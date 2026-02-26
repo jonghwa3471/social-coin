@@ -2,7 +2,11 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../screens/Home";
 import { BLACK_COLOR } from "../colors";
 
-const Nav = createNativeStackNavigator();
+export type InNavParamsList = {
+  코인: undefined;
+};
+
+const Nav = createNativeStackNavigator<InNavParamsList>();
 
 export default function InNav() {
   return (
@@ -15,7 +19,7 @@ export default function InNav() {
         },
       }}
     >
-      <Nav.Screen name="Home" component={Home} />
+      <Nav.Screen name="코인" component={Home} />
     </Nav.Navigator>
   );
 }
