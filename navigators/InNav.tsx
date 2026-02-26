@@ -1,9 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "../screens/Home";
 import { BLACK_COLOR } from "../colors";
+import Detail from "../screens/Detail";
 
 export type InNavParamsList = {
   코인: undefined;
+  Detail: {
+    symbol: string;
+    coinId: string;
+  };
 };
 
 const Nav = createNativeStackNavigator<InNavParamsList>();
@@ -20,6 +25,7 @@ export default function InNav() {
       }}
     >
       <Nav.Screen name="코인" component={Home} />
+      <Nav.Screen name="Detail" component={Detail} />
     </Nav.Navigator>
   );
 }

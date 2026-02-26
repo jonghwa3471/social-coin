@@ -37,7 +37,7 @@ export interface ICoin {
 
 export default function Home({
   navigation,
-}: NativeStackScreenProps<InNavParamsList>) {
+}: NativeStackScreenProps<InNavParamsList, "코인">) {
   const { isLoading, data } = useQuery<ICoin[]>({
     queryKey: ["coins"],
     queryFn: coins,
