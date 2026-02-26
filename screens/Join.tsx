@@ -1,7 +1,12 @@
 import { useRef, useState } from "react";
 import styled from "styled-components/native";
 import { BLACK_COLOR } from "../colors";
-import { TextInput } from "react-native";
+import { ActivityIndicator, Alert, TextInput } from "react-native";
+import { getApp } from "@react-native-firebase/app";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+} from "@react-native-firebase/auth";
 
 const Container = styled.View`
   background-color: ${BLACK_COLOR};
@@ -34,11 +39,37 @@ const BtnText = styled.Text`
 `;
 
 export default function Join() {
+  const app = getApp();
+  const auth = getAuth(app);
   const passwordInput = useRef<TextInput>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const onSubmitEditing = () => {
+  const [loading, setLoading] = useState(false);
+  const onSubmitEmailEditing = () => {
     passwordInput.current?.focus();
+  };
+  const onSubmitPasswordEditing = async () => {
+    if (loading) {
+      return;
+    }
+    if (email === "" || password === "") {
+      return Alert.alert("Fill in the form.", "Email and Password");
+    }
+    setLoading(true);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      console.log(userCredential);
+    } catch (error: any) {
+      switch (error.code) {
+        case "auth/weak-password": {
+          Alert.alert("Write a stronger password.");
+        }
+      }
+    }
   };
   return (
     <Container>
@@ -50,7 +81,7 @@ export default function Join() {
         value={email}
         returnKeyType="next"
         onChangeText={(text) => setEmail(text)}
-        onSubmitEditing={onSubmitEditing}
+        onSubmitEditing={onSubmitEmailEditing}
         placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
       />
       <Input
@@ -61,9 +92,14 @@ export default function Join() {
         returnKeyType="done"
         onChangeText={(text) => setPassword(text)}
         placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+        onSubmitEditing={onSubmitPasswordEditing}
       />
-      <Btn>
-        <BtnText>Create Account</BtnText>
+      <Btn onPress={onSubmitPasswordEditing}>
+        {loading ? (
+          <ActivityIndicator color={"white"} />
+        ) : (
+          <BtnText>Create Account</BtnText>
+        )}
       </Btn>
     </Container>
   );
