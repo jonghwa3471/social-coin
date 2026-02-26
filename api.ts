@@ -10,5 +10,5 @@ export const info = ({ queryKey }: QueryFunctionContext) =>
 
 export const history = ({ queryKey }: QueryFunctionContext) =>
   fetch(
-    `${BASE_URL}/tickers/${queryKey[1]}/historical?${new Date().toISOString().split("T")[0]}&interval=30m`,
+    `${BASE_URL}/tickers/${queryKey[1]}/historical?start=${new Date().toISOString().split("T")[0]}&interval=1h`,
   ).then((response) => response.json());
