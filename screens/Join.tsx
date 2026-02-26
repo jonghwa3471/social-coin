@@ -57,12 +57,7 @@ export default function Join() {
     }
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
-      console.log(userCredential);
+      await createUserWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       switch (error.code) {
         case "auth/weak-password": {
